@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SK Auth — Secure Authentication Experience. A premium, responsive authentication interface built with HTML, CSS, and JavaScript." />
+  <title>SK Auth — Sign In</title>
+
+  <!-- Inline SVG favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%235B2A86'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-weight='700' font-size='14' fill='white' text-anchor='middle'%3ESK%3C/text%3E%3C/svg%3E" />
+
+  <!-- Google Fonts: Fraunces (serif display) + Sora (geometric sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap 5 (grid + utilities only) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════
+       TOAST CONTAINER
+  ════════════════════════════════════════════════ -->
+  <div id="toast-container" role="region" aria-live="polite" aria-label="Notifications"></div>
+
+  <!-- ════════════════════════════════════════════════
+       CANVAS — particle burst (success confetti)
+  ════════════════════════════════════════════════ -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- ════════════════════════════════════════════════
+       MAIN WRAPPER
+  ════════════════════════════════════════════════ -->
+  <div class="auth-wrapper" id="auth-wrapper">
+
+    <!-- ── DECORATIVE PANEL (right 45%) ─────────── -->
+    <aside class="deco-panel" aria-hidden="true">
+      <!-- Animated blob shapes -->
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+
+      <!-- SK Auth Logo inside deco panel -->
+      <div class="deco-brand">
+        <div class="sk-logo" aria-label="SK Auth logo">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="40" height="40" rx="10" fill="#5B2A86"/>
+            <rect width="40" height="40" rx="10" fill="url(#lg1)" opacity="0.7"/>
+            <!-- S -->
+            <path d="M10 26.5c.8 1.2 2.2 2 3.8 2 2.2 0 3.8-1.4 3.8-3.2 0-1.6-1-2.6-2.8-3.2l-1.2-.4C12.4 21.3 12 20.8 12 20.1c0-.9.7-1.5 1.6-1.5.8 0 1.5.4 2 1l1.4-1.4c-.8-.9-2-1.5-3.4-1.5-2 0-3.5 1.3-3.5 3 0 1.5 1 2.5 2.6 3l1.2.4c1 .4 1.4.9 1.4 1.6 0 1-.8 1.7-1.9 1.7-1 0-1.9-.5-2.5-1.3L10 26.5z" fill="white"/>
+            <!-- K -->
+            <path d="M21 16.8h2v5.4l4.5-5.4H30l-5 5.8 5.2 6.2h-2.6l-4.6-5.6v5.6h-2V16.8z" fill="white"/>
+            <defs>
+              <linearGradient id="lg1" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#7B42B0"/>
+                <stop offset="1" stop-color="#5B2A86" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="brand-name">SK Auth</span>
+      </div>
+
+      <!-- Rotating feature carousel -->
+      <div class="feature-carousel" id="feature-carousel">
+        <div class="feature-slide active">
+          <blockquote class="feature-quote">
+            "Design is not just what it looks like. Design is how it works."
+          </blockquote>
+          <cite class="feature-author">— Steve Jobs</cite>
+        </div>
+        <div class="feature-slide">
+          <blockquote class="feature-quote">
+            "Simplicity is the ultimate sophistication — and the highest form of elegance."
+          </blockquote>
+          <cite class="feature-author">— Leonardo da Vinci</cite>
+        </div>
+        <div class="feature-slide">
+          <blockquote class="feature-quote">
+            "Good design is obvious. Great design is transparent."
+          </blockquote>
+          <cite class="feature-author">— Joe Sparano</cite>
+        </div>
+      </div>
+
+      <!-- Carousel dots -->
+      <div class="carousel-dots" id="carousel-dots">
+        <button class="dot active" data-index="0" aria-label="Slide 1"></button>
+        <button class="dot" data-index="1" aria-label="Slide 2"></button>
+        <button class="dot" data-index="2" aria-label="Slide 3"></button>
+      </div>
+    </aside>
+
+    <!-- ── MOBILE TOP BANNER (collapses deco panel) ─ -->
+    <div class="mobile-banner" aria-hidden="true">
+      <div class="blob blob-m1"></div>
+      <div class="blob blob-m2"></div>
+      <div class="mobile-brand">
+        <div class="sk-logo sk-logo--sm" aria-label="SK Auth logo">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="40" height="40" rx="10" fill="#5B2A86"/>
+            <rect width="40" height="40" rx="10" fill="url(#lg2)" opacity="0.7"/>
+            <path d="M10 26.5c.8 1.2 2.2 2 3.8 2 2.2 0 3.8-1.4 3.8-3.2 0-1.6-1-2.6-2.8-3.2l-1.2-.4C12.4 21.3 12 20.8 12 20.1c0-.9.7-1.5 1.6-1.5.8 0 1.5.4 2 1l1.4-1.4c-.8-.9-2-1.5-3.4-1.5-2 0-3.5 1.3-3.5 3 0 1.5 1 2.5 2.6 3l1.2.4c1 .4 1.4.9 1.4 1.6 0 1-.8 1.7-1.9 1.7-1 0-1.9-.5-2.5-1.3L10 26.5z" fill="white"/>
+            <path d="M21 16.8h2v5.4l4.5-5.4H30l-5 5.8 5.2 6.2h-2.6l-4.6-5.6v5.6h-2V16.8z" fill="white"/>
+            <defs>
+              <linearGradient id="lg2" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#7B42B0"/>
+                <stop offset="1" stop-color="#5B2A86" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="brand-name">SK Auth</span>
+      </div>
+    </div>
+
+    <!-- ── FORM PANEL (left 55%) ─────────────────── -->
+    <main class="form-panel" id="form-panel">
+
+      <!-- Theme toggle -->
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        aria-label="Toggle dark/light theme"
+        title="Toggle theme"
+      >
+        <span class="toggle-icon" id="toggle-icon">☀</span>
+      </button>
+
+      <!-- ── TAB SWITCHER ───────────────────────── -->
+      <div class="auth-tabs" role="tablist" aria-label="Authentication mode">
+        <button
+          class="auth-tab active"
+          id="tab-login"
+          role="tab"
+          aria-selected="true"
+          aria-controls="panel-login"
+          tabindex="0"
+        >Sign In</button>
+        <button
+          class="auth-tab"
+          id="tab-register"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panel-register"
+          tabindex="-1"
+        >Create Account</button>
+        <span class="tab-indicator" id="tab-indicator"></span>
+      </div>
+
+      <!-- ════════════════════════════════════════
+           LOGIN PANEL
+      ════════════════════════════════════════ -->
+      <section
+        class="auth-panel active"
+        id="panel-login"
+        role="tabpanel"
+        aria-labelledby="tab-login"
+      >
+        <header class="panel-header">
+          <h1 class="panel-title">Welcome back</h1>
+          <p class="panel-subtitle">Sign in to continue your journey.</p>
+        </header>
+
+        <!-- Social login row -->
+        <div class="social-row" aria-label="Social sign-in options">
+          <button class="social-btn" id="btn-google-login" type="button" aria-label="Sign in with Google">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Google
+          </button>
+          <button class="social-btn" id="btn-github-login" type="button" aria-label="Sign in with GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            GitHub
+          </button>
+        </div>
+
+        <div class="divider"><span>or continue with email</span></div>
+
+        <!-- Login form -->
+        <form id="form-login" novalidate autocomplete="on">
+          <fieldset>
+            <legend class="visually-hidden">Login credentials</legend>
+
+            <!-- Email/Username -->
+            <div class="field-group" id="fg-login-email">
+              <label class="field-label" for="login-email">Email or username</label>
+              <div class="field-wrap">
+                <input
+                  type="text"
+                  id="login-email"
+                  name="email"
+                  class="field-input"
+                  autocomplete="email"
+                  placeholder="you@example.com"
+                  aria-describedby="login-email-error"
+                  aria-required="true"
+                />
+                <span class="field-icon field-status" aria-hidden="true"></span>
+              </div>
+              <span class="field-error" id="login-email-error" role="alert" aria-live="assertive"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="field-group" id="fg-login-password">
+              <div class="field-label-row">
+                <label class="field-label" for="login-password">Password</label>
+                <a href="#" class="forgot-link" id="forgot-link" tabindex="0">Forgot password?</a>
+              </div>
+              <div class="field-wrap">
+                <input
+                  type="password"
+                  id="login-password"
+                  name="password"
+                  class="field-input"
+                  autocomplete="current-password"
+                  placeholder="••••••••"
+                  aria-describedby="login-password-error login-caps-warn"
+                  aria-required="true"
+                />
+                <button type="button" class="toggle-pw" aria-label="Show password" data-target="login-password">
+                  <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+              <span class="caps-warn" id="login-caps-warn" role="alert" aria-live="polite" style="display:none">⇪ Caps Lock is on</span>
+              <span class="field-error" id="login-password-error" role="alert" aria-live="assertive"></span>
+            </div>
+
+            <!-- Remember me -->
+            <div class="remember-row">
+              <label class="custom-check" for="remember-me">
+                <input type="checkbox" id="remember-me" name="remember" />
+                <span class="check-box" aria-hidden="true"></span>
+                <span class="check-label">Remember me for 30 days</span>
+              </label>
+            </div>
+
+          </fieldset>
+
+          <!-- Submit button -->
+          <button type="submit" class="btn-primary" id="btn-login-submit" aria-label="Sign in">
+            <span class="btn-label">Sign In</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span class="btn-check" aria-hidden="true">✓</span>
+          </button>
+
+          <p class="switch-link">
+            Don't have an account?
+            <a href="#" id="switch-to-register" tabindex="0">Create one</a>
+          </p>
+        </form>
+      </section>
+
+      <!-- ════════════════════════════════════════
+           REGISTER PANEL
+      ════════════════════════════════════════ -->
+      <section
+        class="auth-panel"
+        id="panel-register"
+        role="tabpanel"
+        aria-labelledby="tab-register"
+        hidden
+      >
+        <header class="panel-header">
+          <h1 class="panel-title">Create account</h1>
+          <p class="panel-subtitle">Join the SK Auth community.</p>
+        </header>
+
+        <!-- Form completion ring -->
+        <div class="progress-ring-wrap" aria-label="Form completion progress">
+          <svg class="progress-ring" viewBox="0 0 56 56" aria-hidden="true">
+            <circle class="progress-ring-bg" cx="28" cy="28" r="22" />
+            <circle class="progress-ring-fill" id="progress-fill" cx="28" cy="28" r="22" />
+          </svg>
+          <span class="progress-pct" id="progress-pct">0%</span>
+        </div>
+
+        <!-- Social login row -->
+        <div class="social-row" aria-label="Social sign-up options">
+          <button class="social-btn" id="btn-google-reg" type="button" aria-label="Sign up with Google">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Google
+          </button>
+          <button class="social-btn" id="btn-github-reg" type="button" aria-label="Sign up with GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            GitHub
+          </button>
+        </div>
+
+        <div class="divider"><span>or fill in the form</span></div>
+
+        <!-- Register form -->
+        <form id="form-register" novalidate autocomplete="on">
+          <fieldset>
+            <legend class="visually-hidden">Account details</legend>
+
+            <!-- Full name -->
+            <div class="field-group" id="fg-reg-name">
+              <label class="field-label" for="reg-name">Full name</label>
+              <div class="field-wrap">
+                <input
+                  type="text"
+                  id="reg-name"
+                  name="name"
+                  class="field-input"
+                  autocomplete="name"
+                  placeholder="Ada Lovelace"
+                  aria-describedby="reg-name-error"
+                  aria-required="true"
+                />
+                <span class="field-icon field-status" aria-hidden="true"></span>
+              </div>
+              <span class="field-error" id="reg-name-error" role="alert" aria-live="assertive"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="field-group" id="fg-reg-email">
+              <label class="field-label" for="reg-email">Email address</label>
+              <div class="field-wrap">
+                <input
+                  type="email"
+                  id="reg-email"
+                  name="email"
+                  class="field-input"
+                  autocomplete="email"
+                  placeholder="ada@example.com"
+                  aria-describedby="reg-email-error"
+                  aria-required="true"
+                />
+                <span class="field-icon field-status" aria-hidden="true"></span>
+              </div>
+              <span class="field-error" id="reg-email-error" role="alert" aria-live="assertive"></span>
+            </div>
+
+            <!-- Phone -->
+            <div class="field-group" id="fg-reg-phone">
+              <label class="field-label" for="reg-phone">Phone number</label>
+              <div class="field-wrap phone-wrap">
+                <button type="button" class="country-code-btn" id="country-code-btn" aria-label="Select country code" aria-expanded="false" aria-haspopup="listbox">
+                  <span id="cc-flag">🇺🇸</span>
+                  <span id="cc-code">+1</span>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <div class="country-dropdown" id="country-dropdown" role="listbox" aria-label="Country codes" hidden>
+                  <div class="cc-search-wrap"><input type="text" id="cc-search" class="cc-search" placeholder="Search country…" aria-label="Search country codes" /></div>
+                  <ul class="cc-list" id="cc-list"></ul>
+                </div>
+                <input
+                  type="tel"
+                  id="reg-phone"
+                  name="phone"
+                  class="field-input phone-input"
+                  autocomplete="tel"
+                  placeholder="(555) 000-0000"
+                  aria-describedby="reg-phone-error"
+                  aria-required="true"
+                />
+                <span class="field-icon field-status" aria-hidden="true"></span>
+              </div>
+              <span class="field-error" id="reg-phone-error" role="alert" aria-live="assertive"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="field-group" id="fg-reg-password">
+              <label class="field-label" for="reg-password">Password</label>
+              <div class="field-wrap">
+                <input
+                  type="password"
+                  id="reg-password"
+                  name="password"
+                  class="field-input"
+                  autocomplete="new-password"
+                  placeholder="••••••••"
+                  aria-describedby="reg-password-error reg-caps-warn pw-strength-desc"
+                  aria-required="true"
+                />
+                <button type="button" class="toggle-pw" aria-label="Show password" data-target="reg-password">
+                  <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+              <span class="caps-warn" id="reg-caps-warn" role="alert" aria-live="polite" style="display:none">⇪ Caps Lock is on</span>
+              <span class="field-error" id="reg-password-error" role="alert" aria-live="assertive"></span>
+
+              <!-- Password strength meter -->
+              <div class="pw-strength" id="pw-strength" aria-hidden="true">
+                <div class="strength-bar-wrap">
+                  <div class="strength-seg" id="seg-0"></div>
+                  <div class="strength-seg" id="seg-1"></div>
+                  <div class="strength-seg" id="seg-2"></div>
+                  <div class="strength-seg" id="seg-3"></div>
+                </div>
+                <div class="strength-meta">
+                  <span class="strength-label" id="strength-label">—</span>
+                  <span class="strength-tip" id="strength-tip"></span>
+                </div>
+              </div>
+              <span class="visually-hidden" id="pw-strength-desc" aria-live="polite"></span>
+            </div>
+
+            <!-- Confirm password -->
+            <div class="field-group" id="fg-reg-confirm">
+              <label class="field-label" for="reg-confirm">Confirm password</label>
+              <div class="field-wrap">
+                <input
+                  type="password"
+                  id="reg-confirm"
+                  name="confirm"
+                  class="field-input"
+                  autocomplete="new-password"
+                  placeholder="••••••••"
+                  aria-describedby="reg-confirm-error"
+                  aria-required="true"
+                />
+                <button type="button" class="toggle-pw" aria-label="Show confirm password" data-target="reg-confirm">
+                  <svg class="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+                <span class="match-icon" id="match-icon" aria-hidden="true"></span>
+              </div>
+              <span class="field-error" id="reg-confirm-error" role="alert" aria-live="assertive"></span>
+            </div>
+
+          </fieldset>
+
+          <button type="submit" class="btn-primary" id="btn-register-submit" aria-label="Create account">
+            <span class="btn-label">Create Account</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span class="btn-check" aria-hidden="true">✓</span>
+          </button>
+
+          <p class="switch-link">
+            Already have an account?
+            <a href="#" id="switch-to-login" tabindex="0">Sign in</a>
+          </p>
+        </form>
+      </section>
+
+    </main>
+  </div><!-- /.auth-wrapper -->
+
+  <!-- ════════════════════════════════════════════════
+       SUCCESS OVERLAY — shown after auth completes
+  ════════════════════════════════════════════════ -->
+  <div id="success-overlay" class="success-overlay" role="dialog" aria-modal="true" aria-labelledby="success-title" hidden>
+    <div class="success-card">
+      <!-- Animated success circle with SVG checkmark draw -->
+      <div class="success-anim" aria-hidden="true">
+        <svg class="success-circle-svg" viewBox="0 0 80 80" fill="none">
+          <circle class="success-circle-bg" cx="40" cy="40" r="36" />
+          <circle class="success-circle-ring" cx="40" cy="40" r="36" />
+          <polyline class="success-check" points="24,42 35,53 56,30" />
+        </svg>
+      </div>
+      <h2 class="success-title" id="success-title">Success!</h2>
+      <p class="success-msg" id="success-msg">You are being redirected…</p>
+      <div class="success-progress-bar"><div class="success-progress-fill" id="success-bar"></div></div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (bundle) — used for utility purposes only -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom script -->
+  <script src="script.js"></script>
+</body>
+</html>

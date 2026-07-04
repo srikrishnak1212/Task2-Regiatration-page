@@ -90,7 +90,7 @@ No build step required. This is a pure static project.
 
 **Clone or download:**
 ```bash
-git clone https://github.com/your-username/sk-auth.git
+git clone https://github.com/srikrishnak1212/sk-auth.git
 cd sk-auth
 ```
 
@@ -196,17 +196,6 @@ Password strength scoring (0–4):
 
 ---
 
-## Screenshots
-
-> *(Add screenshots here after capturing the UI)*
-
-| View | Preview |
-|------|---------|
-| Login — Light Mode  | `screenshots/login-light.png`  |
-| Login — Dark Mode   | `screenshots/login-dark.png`   |
-| Register — Light    | `screenshots/register-light.png` |
-| Success Overlay     | `screenshots/success-overlay.png` |
-| Mobile View         | `screenshots/mobile.png`       |
 
 ---
 
@@ -231,18 +220,18 @@ Password strength scoring (0–4):
 **SK** — UI Developer & Designer  
 Building premium web experiences with an editorial aesthetic.
 
-- GitHub: [github.com/your-username](https://github.com/your-username)
-- Portfolio: [your-portfolio.dev](https://your-portfolio.dev)
+- GitHub: [github.com/your-username](https://github.com/srikrishnak1212)
+
 
 ---
 
 ## GitHub Repository
 
 ```
-https://github.com/your-username/sk-auth
+https://github.com/srikrishnak1212/sk-auth
 ```
 
-> Replace `your-username` with your actual GitHub username before publishing.
+
 
 ---
 
